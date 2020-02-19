@@ -48,39 +48,7 @@
                     id: 'down' + i,
                     image: image,
                     rect: [225,0, 38, 50],
-                    // x: 200,
-                    // y: this.groundY-40
-                    // ,
-                    // boundsArea:[ // 可视对象的区域顶点数组。
-                    //     {x:8, y:0}, 
-                    //     {x:140, y:0}, 
-                    //     {x:140, y:60}, 
-                    //     {x:136, y:60}, 
-                    //     {x:136, y:820}, 
-                    //     {x:14, y:820}, 
-                    //     {x:14, y:60}, 
-                    //     {x:8, y:60}
-                    // ]
                 }).addTo(this);
-    
-                // var upHose = new Hilo.Bitmap({
-                //     id: 'up' + i,
-                //     image: image,
-                //     rect: [225,0, 38, 50],
-                //     x: 200,
-                //     y: 160
-                //     // ,
-                //     // boundsArea:[
-                //     //     {x:14, y:0}, 
-                //     //     {x:140, y:0}, 
-                //     //     {x:140, y:820-60}, 
-                //     //     {x:144, y:820-60},
-                //     //     {x:144, y:820}, 
-                //     //     {x:8, y:820}, 
-                //     //     {x:8, y:820-60}, 
-                //     //     {x:14, y:820-60}
-                //     // ]
-                // }).addTo(this);
     
                 this.placeHose(downHose, i);
             }           
@@ -90,30 +58,11 @@
         placeHose: function(down, index){
             down.x = this.hoseWidth * index;
             down.y = this.groundY-40;
-    
-              
-            // down.y = downMinY + (downMaxY - downMinY) * Math.random() >> 0;
-            // down.x = this.hoseWidth * index;
-    
-            // up.y = down.y - this.hoseSpacingY - up.height;
-            // up.x = down.x;
-    
-            // //下面障碍在y轴的最上的位置
-            // var downMinY = this.groundY - down.height + this.hoseSpacingY;
-            // //下面障碍在y轴的最下的位置
-            // var downMaxY = this.groundY - 180;
-            // //在downMinY和downMaxY之间随机位置
-            // down.y = downMinY + (downMaxY - downMinY) * Math.random() >> 0;
-            // down.x = this.hoseWidth * index;
-    
-            // up.y = down.y - this.hoseSpacingY - up.height;
-            // up.x = down.x;
         },
     
         resetHoses: function(){
             // children:Array 容器的子元素列表。只读。
             var total = this.children.length;
-    
             //把已移出屏幕外的管子放到队列最后面，并重置它们的可穿越位置
             for(var i = 0; i < this.numOffscreenHoses; i++){
                 var downHose = this.getChildAt(0);
@@ -138,8 +87,6 @@
     
             //继续移动
             this.startMove();
-            
-            // TODO _tweens 是啥意思？
             Hilo.Tween._tweens.push(this.moveTween);
         },
         // 开始移动

@@ -59,29 +59,12 @@
         // 更新舞台
         initStage: function() {
             // window对象属性
-            // innerheight 返回窗口的文档显示区的高度。
-            // innerwidth 返回窗口的文档显示区的宽度。
-            // 取窗口和450的较小值
-            // this.width = Math.min(innerWidth, 450) * 2;
-            // this.height = Math.min(innerHeight, 750) * 2;
-           
-
             this.width = 600;
             this.height = 300;
             this.scale = 1; // 缩放比例
 
             //舞台画布
             var renderType = location.search.indexOf('dom') != -1 ? 'dom' : 'canvas';
-            
-            // 舞台是可视对象树的根，可视对象只有添加到舞台或其子对象后才会被渲染出来。
-            //舞台
-            // this.stage = new Hilo.Stage({
-            //     renderType: 'canvas',
-            //     container: document.getElementById('game-container'),  //父容器
-            //     width: 320,
-            //     height: 480,
-            //     background: 'lightblue' // 背景颜色
-            // });
             
             this.stage = new Hilo.Stage({
                 renderType: renderType,
@@ -93,8 +76,6 @@
                 background: 'lightblue',
                 align : Hilo.align.CENTER
             });
-            // document.body.appendChild(this.stage.canvas);
-
             // Ticker是一个定时器类。它可以按指定帧率重复运行，从而按计划执行代码。
             //启动计时器
             this.ticker = new Hilo.Ticker(0);
@@ -120,75 +101,23 @@
                 }.bind(this));
             }
 
-            // //舞台更新
+            //舞台更新
             this.stage.onUpdate = this.onUpdate.bind(this);
 
             //初始化
             this.initBackground();
-            this.initScenes();
             this.initHoldbacks();
             this.initTrex();
-            // this.initCurrentScore();
-
-            //准备游戏
+            // 准备游戏
             this.gameReady();
-            // 1.创建舞台
-        // 舞台Stage是一个各种图形、精灵动画等的总载体。所以可见的对象都要添加到舞台或其子容器后，才会被渲染出来。
-        // this.stage = new Hilo.Stage({
-        //     renderType: 'canvas',
-        //     container: document.getElementById('game-container'),  //父容器
-        //     width: this.width,
-        //     height: this.height,
-        //     background: 'lightblue' // 背景颜色
-        // });
-       // 2.创建可视对象
-       // 舞台上的一切对象都是可视对象，可以是图片、精灵、文字、图形，甚至DOM元素等等。Hilo提供了一些基本的可视类供您使用，比如添加一个图片到舞台上：
-        // var bird = new Hilo.Bitmap({
-        //     image: this.asset.trexSprites
-        //     , rect: [0, 0, 100, 100]
-        // }).addTo(this.stage);
-        // bird.x = 100;
-        // bird.y = 100;
-        // 3.创建定时器
-        // 舞台Stage上的物体的运动等变化，都是通过一个定时器Ticker不断地调用Stage.tick()方法来实现刷新的。      
-        // var ticker = new Hilo.Ticker(1); // 指定定时器的运行帧率。默认60。
-        // ticker.addTick(this.stage); // 添加定时器对象。定时器对象必须实现 tick 方法。
-        // ticker.start();
-
-        // 4.事件交互
-        // 要想舞台上的图形、精灵动画等对象能响应用户的点击、触碰等交互事件，就必需先为舞台开启DOM事件响应，然后就可以使用View.on()来响应事件。
-        // this.stage.enableDOMEvent(Hilo.event.POINTER_START, true);
-        // bird.on(Hilo.event.POINTER_START, function (e) {
-        //     console.log(e.eventTarget, e.stageX, e.stageY);
-        // });
-
-        // 5.监听舞台的变化-实际就是定时执行
-        // onUpdate:Function
-        // 更新可视对象，此方法会在可视对象渲染之前调用。此函数可以返回一个Boolean值。若返回false，则此对象不会渲染。默认值为null。 限制：如果在此函数中改变了可视对象在其父容器中的层级，当前渲染帧并不会正确渲染，而是在下一渲染帧。可在其父容器的onUpdate方法中来实现。
-        // this.stage.onUpdate = function () {
-        //     console.log("sela");
-        // }
 
         },
 
         initBackground: function() {
-            // 背景-大小
-            // var bgWidth = this.width * this.scale;
-            // var bgHeight = this.height * this.scale;
-
-            // var bgImg = this.asset.bg;
-            // this.bg = new Hilo.Bitmap({
-            //     id: 'bg',
-            //     image: bgImg,
-            //     scaleX: this.width / bgImg.width, // 因为=》背景要完全平铺到舞台上
-            //     scaleY: this.height / bgImg.height
-            // }).addTo(this.stage);
 
             // 地面
             // 地面也是背景的一部分，处于画面最下端。地面我们使用可视对象Bitmap类。一般的，不需要使用精灵动画的普通图片对象都可使用此类。Bitmap类只要传入相应的图片image参数即可。
             // 此外，为了方便查找对象，一般我们都为可视对象取一个合适的id。
-            // var groundImg = this.asset.trexSprites;
-
             this.ground1 = new Hilo.Bitmap({
                 id: 'ground1',
                 image: this.asset.trexSprites,
@@ -212,23 +141,8 @@
             // 地面y轴-给小恐龙类和障碍物类作基准
             this.ground.groundY = this.ground1.y;
             this.ground.addChild(this.ground1,this.ground2);
-
             
         },
-
-        initCurrentScore: function() {
-            //当前分数
-            this.currentScore = new Hilo.BitmapText({
-                id: 'score',
-                glyphs: this.asset.numberGlyphs,
-                textAlign: 'center'
-            }).addTo(this.stage);
-
-            //设置当前分数的位置
-            this.currentScore.x = this.width - this.currentScore.width >> 1;
-            this.currentScore.y = 180;
-        },
-
         // 小恐龙类
         initTrex: function() {
 
@@ -239,40 +153,11 @@
                 startY: this.ground.groundY - 35,
                 groundY: this.ground.groundY - 35 // todo
             }).addTo(this.stage);
-
-            // this.trex = new Hilo.Bitmap({
-            //     id: 'trex',
-            //     image: this.asset.trexSprites,
-            //     rect:[225,0, 38, 50]
-            // }).addTo(this.stage);
-            // this.trex = new Hilo.Bitmap({
-            //     id: 'trex',
-            //     image: this.asset.trexSprites,
-            //     rect:[38,0, 50, 50]
-            // }).addTo(this.stage);
-            // this.trex.x = 10;
-            // this.trex.y = this.ground.y-this.trex.height;
-
             this.trex.y = this.ground1.y;
 
         },
 
         initHoldbacks: function() {
-
-            // this.holdbacks = new Hilo.Bitmap({
-            //     id: 'holdbacks',
-            //     image: this.asset.trexSprites,
-            //     rect:[225,0, 38, 50]
-            // }).addTo(this.stage);
-
-            // this.holdbacks.x = 200;
-            // this.holdbacks.y = this.ground1.y-40;
-            // Hilo.Tween.to(this.holdbacks, {
-            //     x: 10
-            // }, {
-            //     duration: 5000,
-            //     loop: true
-            // });
             this.holdbacks = new game.Holdbacks({
                 id: 'holdbacks',
                 image: this.asset.trexSprites,
@@ -281,43 +166,7 @@
                 groundY: this.ground1.y+17
             }).addTo(this.stage, this.ground1.depth - 1);
         },
-        initScenes: function() {
-
-            
-            //准备场景
-            // this.gameReadyScene = new game.ReadyScene({
-            //     id: 'readyScene',
-            //     width: this.width,
-            //     height: this.height,
-            //     image: this.asset.ready
-            // }).addTo(this.stage);
-
-            // //结束场景
-            // this.gameOverScene = new game.OverScene({
-            //     id: 'overScene',
-            //     width: this.width,
-            //     height: this.height,
-            //     image: this.asset.over,
-            //     numberGlyphs: this.asset.numberGlyphs,
-            //     visible: false // 可视对象是否可见。默认为可见，即true。
-            // }).addTo(this.stage);
-
-            // //绑定开始按钮事件
-            // this.gameOverScene.getChildById('start').on(Hilo.event.POINTER_START, function(e) {
-            //     e.stopImmediatePropagation && e.stopImmediatePropagation();
-            //     this.gameReady();
-            // }.bind(this));
-        },
-
         onUserInput: function(e) {
-            
-            // 游戏未结束
-            // if (this.state !== 'over') {
-            //     // 启动游戏场景
-            //     if (this.state !== 'playing') this.gameStart();
-            //     // 控制小鸟往上飞
-            //     this.trex.startFly();
-            // }
             // 按键音乐
            this.audioPress.play();
 
@@ -333,46 +182,18 @@
         },
 
         onUpdate: function(delta) {
-            // console.log('update')
-            // if (this.state === 'ready') {
-            //     return;
-            // }
-
-            // if (this.bird.isDead) {
-            //     this.gameOver();
-            // } else {
-            //     this.currentScore.setText(this.calcScore());
-            //     //碰撞检测
-            //  var trex1 = this.trex.getChildById("trex1");
                 if (this.holdbacks.checkCollision(this.trex,true)) {
                     console.log("game over"+new Date());
                     this.gameOver();
                     return ;
                 }
-            // }
-
-            // var trex1 = this.trex.getChildById("trex1");
-            // var flag = trex1.hitTestObject(this.holdbacks)
-
-            // if(flag){
-            //     console.log("game over"+new Date());
-            // }
-            // if(flag2){
-            //     console.log("game ove 2")
-            // }
-            // if(this.checkCollision(this.trex)){
-            //     alert("game ove")
-            // }
+          
         },
 
         gameReady: function() {
             // this.gameOverScene.hide();
             this.state = 'ready';
             this.score = 0;
-            // this.currentScore.visible = true;
-            // this.currentScore.setText(this.score);
-            // this.gameReadyScene.visible = true;
-            // this.holdbacks.reset();
             this.trex.getReady();
             this.tipText = new Hilo.Text({
                 text : 'Press Space to start',
@@ -437,32 +258,7 @@
                 location.reload()
                 
             }.bind(this));
-
-                //小鸟跳转到第一帧并暂停
-                // this.trex.goto(0, true);
-                //隐藏屏幕中间显示的分数
-                // this.currentScore.visible = false;
-                //显示结束场景
-                // this.gameOverScene.show(this.calcScore(), this.saveBestScore());
             }
-        },
-
-        calcScore: function() {
-            var count = this.holdbacks.calcPassThrough(this.bird.x);
-            return this.score = count;
-        },
-
-        saveBestScore: function() {
-            var score = this.score,
-                best = 0;
-            if (Hilo.browser.supportStorage) {
-                best = parseInt(localStorage.getItem('hilo-flappy-best-score')) || 0;
-            }
-            if (score > best) {
-                best = score;
-                localStorage.setItem('hilo-flappy-best-score', score);
-            }
-            return best;
         }
     };
 
