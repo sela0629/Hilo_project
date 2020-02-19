@@ -85,7 +85,6 @@ hilo-trex : 小恐龙游戏练习
 # 小恐龙游戏
 
 小恐龙游戏过程
-![753d379ea166f7b4aea35413447f0b08.gif](evernotecid://E2C4C5AC-88F1-4E8E-A176-E8D88E496CBB/appyinxiangcom/25710716/ENResource/p1151)
 
 前期准备就绪，开始你的表演（shou nue）了。
 
@@ -108,8 +107,7 @@ hilo-trex : 小恐龙游戏练习
 ## 起跳运动
 小恐龙上跳过程可以看作是一个竖直上抛运动，根据位移公式可以得到上抛的高度。
 
-根据位移公式：
-![2f1325fc7ca8782d37520216b241f5c6.png](evernotecid://E2C4C5AC-88F1-4E8E-A176-E8D88E496CBB/appyinxiangcom/25710716/ENResource/p1152)
+根据上抛运动位移公式：h = v*t - 1/2g*t*t
 
 ```js
 // 飞行时间
@@ -123,8 +121,6 @@ var y = this.flyStartY - distance;
 ## 地面无缝缓动
 
 通过观察图片，前600px基本直线，通过代码拼接600px形成对称，在循环运动来就可以达到无缝连接。利用HiloJS的Container类，将ground1和ground2合成一个ground，合并运动，这样避免单调设置缓动。
-
-![c9e399a0b73898adbbf9838fcb3907da.png](evernotecid://E2C4C5AC-88F1-4E8E-A176-E8D88E496CBB/appyinxiangcom/25710716/ENResource/p1153)
 
 代码实现如下：
 
@@ -174,8 +170,6 @@ this.groundTween = Hilo.Tween.to(this.ground, {
 `over` 结束
 
 根据游戏状态有3种，小恐龙的变化也有3种，第一个是准备状态，第二个是走路状态，第三个是碰撞时瞳孔睁大状态。如何在Trex类中实现这3种状态的变化呢？
-![e05a5656a39276958ca761cb2fb78d9f.png](evernotecid://E2C4C5AC-88F1-4E8E-A176-E8D88E496CBB/appyinxiangcom/25710716/ENResource/p1156)
-![8fa10eb76255c28e9e1d1667f2dcfaad.png](evernotecid://E2C4C5AC-88F1-4E8E-A176-E8D88E496CBB/appyinxiangcom/25710716/ENResource/p1154)
 
 可以使用动画精灵类Sprite。将用到的sprite图放到TextureAtlas（`TextureAtlas纹理集是将许多小的纹理图片整合到一起的一张大图。这个类可根据一个纹理集数据读取纹理小图、精灵动画等。`）
 
